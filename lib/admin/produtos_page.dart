@@ -2,14 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ecommerce_template/admin/novo_produto_page.dart';
+import 'package:ecommerce_template/admin/opcoes_produto_page.dart';
 import 'package:ecommerce_template/model/categoria.dart';
 import 'package:ecommerce_template/model/produto.dart';
 import 'package:ecommerce_template/repository/categoria_repository.dart';
 import 'package:ecommerce_template/repository/produto_repository.dart';
-import 'package:ecommerce_template/widgets/container_foto_categoria.dart';
+import 'package:ecommerce_template/widgets/custom_containers.dart';
+import 'package:ecommerce_template/widgets/custom_texts.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ProdutosPage extends StatefulWidget {
 
@@ -21,7 +22,7 @@ class _ProdutosPageState extends State<ProdutosPage> {
 
 
   List<Produto> _produtos;
-  List<Categoria> _categorias;
+  //List<Categoria> _categorias;
 
   @override
   void initState() {
@@ -30,25 +31,19 @@ class _ProdutosPageState extends State<ProdutosPage> {
   }
 
 
-  _carregaDados(){
-    ProdutoRepository.getProdutos().then((value){
-      setState(() {
-        _produtos = value;
-      });
-
-      CategoriaRepository.getCategorias().then((value){
-        setState(() {
-          _categorias = value;
-        });
-      });
-
+  _carregaDados() async {
+    _produtos = await ProdutoRepository.getProdutos();
+    setState(() {
 
     });
+
   }
 
 
   @override
   Widget build(BuildContext context) {
+
+
 
     return Scaffold(
       appBar: AppBar(
@@ -57,13 +52,13 @@ class _ProdutosPageState extends State<ProdutosPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => NovoProdutoPage(null, _categorias)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => NovoProdutoPage(null)));
         },
 
         child: Icon(Icons.add, color: Colors.white,),
 
       ),
-      body: _produtos == null ? Center(child: CircularProgressIndicator()) : _body(),
+      body: _body(),
 
     );
   }
@@ -71,104 +66,127 @@ class _ProdutosPageState extends State<ProdutosPage> {
 
   _body() {
 
-    return GridView.builder(
+     if( _produtos == null ){
 
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+       return Center(child: CircularProgressIndicator());
 
-      itemCount: _produtos.length,
-      itemBuilder: (context,index){
+     }
 
-        return Card(
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: 100.0,
-                  height: 100.0,
-                  child: Image.memory(
-                    base64Decode(_produtos[index].fotoPrincipal),
-                    fit: BoxFit.contain,
-                  ),
-                ),
+     if(_produtos.isEmpty){
 
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Text(_produtos[index].titulo, style: TextStyle(fontSize: 20),),
-                ),
+         return CustomContainer.semInformacao("Nenhum produto cadastrado!", 15, Icons.remove_shopping_cart, 50);
+
+     }
+     
+     return _bodyComInformacao();
+
+  }
+
+  ListView _bodyComInformacao() {
+    return ListView.builder(
+
+       shrinkWrap: true,
+
+       itemCount: _produtos.length,
+       itemBuilder: (context,index){
+
+         return Card(
+           child: Padding(
+             padding: const EdgeInsets.all(5.0),
+             child:
+             Row(
+
+               children: <Widget>[
+                 Container(
+
+                   width: 100.0,
+                   height: 100.0,
+                   child: Image.memory(
+                     base64Decode(_produtos[index].fotoPrincipal),
+                     fit: BoxFit.contain,
+                   ),
+                 ),
+
+                 Expanded(
+                   child: Container(
+                     child: Column(
+
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       mainAxisAlignment: MainAxisAlignment.start,
+                       children: <Widget>[
+
+                         Row(
+                           crossAxisAlignment: CrossAxisAlignment.center,
+                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                           children: <Widget>[
+                             Text(_produtos[index].titulo, style: TextStyle(fontSize: 20),),
+
+                             CustomTexts.subTitulo("",_produtos[index].status.status,  14,  Colors.black,   Colors.red)
 
 
-                Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child: Container(
-                        child: FlatButton(onPressed: (){
 
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NovoProdutoPage( _produtos[index], _categorias)));
-
-                        },
-                            child: Text("Editar",style: TextStyle(color: Colors.orange),)
-                        ),
-                      ),
-                    ),
-
-                    FlatButton(onPressed: (){
-
-                      _dialogRemoverProduto(_produtos[index]);
-
-                    },
-                        child: Text("Remover", style: TextStyle(color: Colors.grey),)
-                    )
+                           ],
+                         ),
 
 
-                  ],
-                ),
+                         CustomTexts.subTitulo("Preço compra: ", "R\$ ${ _produtos[index].precoCompra.toString()}",  14,  Colors.black,  Colors.grey ),
+
+
+                         CustomTexts.subTitulo("Preço venda: ", "R\$ ${ _produtos[index].precoVenda.toString()}",  14,  Colors.black,  Colors.grey ),
+
+
+                         CustomTexts.subTitulo("Estoque: ", _produtos[index].qtdTotal.toString(),  14,  Colors.black,  Colors.grey ),
 
 
 
-//              Row(
-//                mainAxisAlignment: MainAxisAlignment.end,
-//                children: [
-//                  FlatButton(
-//                    color: Colors.orange,
-//                    child: Row(
-//                      children: <Widget>[
-//                        Icon(Icons.edit, color: Colors.white,),
-//                        Text("Editar", style: TextStyle(color: Colors.white),)
-//                      ],
-//                    ),
-//                    onPressed: (){
-//
-//                  //      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NovaCategoriaPage(_categorias[index])));
-//
-//                    },
-//                  ),
-//
-//                  RaisedButton(
-//                    color: Colors.orange,
-//                    child: Row(
-//
-//                      children: <Widget>[
-//                        Icon(Icons.delete_outline, color: Colors.white,),
-//                        Text("Remover", style: TextStyle(color: Colors.white),)
-//                      ],
-//                    ),
-//                    onPressed: (){
-//
-//
-//                    },
-//                  )
-//                ],
-//              )
-              ],
-            ),
-          ),
-        );
+                         Row(
 
-      },);
+                           mainAxisAlignment: MainAxisAlignment.end,
+                           children: [
+
+
+                             FlatButton(onPressed: (){
+
+                               Navigator.of(context).push(MaterialPageRoute(builder: (context)=>OpcoesProdutoPage(_produtos[index])));
+
+                             },
+                                 child: Text("Detalhes",style: TextStyle(color: Colors.orange),)
+                             ),
+
+
+                             FlatButton(onPressed: (){
+
+                               Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NovoProdutoPage( _produtos[index])));
+
+                             },
+                                 child: Text("Editar",style: TextStyle(color: Colors.orange),)
+                             ),
+
+                             FlatButton(onPressed: (){
+
+                               _dialogRemoverProduto(_produtos[index]);
+
+                             },
+                                 child: Text("Remover", style: TextStyle(color: Colors.grey),)
+                             )
+
+                           ],
+
+                         )
+
+                       ],
+                     ),
+                   ),
+                 ),
+
+               ],
+             ),
+
+           ),
+         );
+
+       },);
   }
 
 
@@ -183,7 +201,7 @@ class _ProdutosPageState extends State<ProdutosPage> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              circleFotoCategoria(produto.fotoPrincipal),
+              CustomContainer.fotoCircular(produto.fotoPrincipal, 40, 40, 40, Colors.orange),
               Text(produto.titulo),
               Divider(),
               Text("Deseja remover este produto?",textAlign: TextAlign.center,),

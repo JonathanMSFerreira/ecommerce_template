@@ -2,7 +2,7 @@
 import 'package:ecommerce_template/admin/nova_categoria_page.dart';
 import 'package:ecommerce_template/model/categoria.dart';
 import 'package:ecommerce_template/repository/categoria_repository.dart';
-import 'package:ecommerce_template/widgets/container_foto_categoria.dart';
+import 'package:ecommerce_template/widgets/custom_containers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -94,7 +94,7 @@ class _CategoriasPageState extends State<CategoriasPage> {
                  mainAxisSize: MainAxisSize.min,
 
                  children: [
-                   circleFotoCategoria(_categorias[index].foto),
+                   CustomContainer.fotoCircular(_categorias[index].foto, 40, 40, 40, Colors.orange),
                    Padding(
                      padding: const EdgeInsets.all(2.0),
                      child: Text(_categorias[index].titulo, style: TextStyle(fontSize: 20),),
@@ -150,7 +150,7 @@ class _CategoriasPageState extends State<CategoriasPage> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              circleFotoCategoria(categoria.foto),
+              CustomContainer.fotoCircular(categoria.foto, 40, 40, 40, Colors.orange),
               Text(categoria.titulo),
               Divider(),
               Text("Deseja remover esta categoria?",textAlign: TextAlign.center,),

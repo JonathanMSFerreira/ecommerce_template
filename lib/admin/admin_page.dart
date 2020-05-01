@@ -8,6 +8,7 @@ import 'package:ecommerce_template/model/usuario.dart';
 import 'package:ecommerce_template/repository/categoria_repository.dart';
 import 'package:ecommerce_template/repository/cliente_repository.dart';
 import 'package:ecommerce_template/repository/produto_repository.dart';
+import 'package:ecommerce_template/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 
@@ -29,8 +30,7 @@ class _AdminPageState extends State<AdminPage> {
 
 
   Page _selectedPage = Page.dashboard;
-  MaterialColor active = Colors.orange;
-  MaterialColor notActive = Colors.grey;
+
 
 
   @override

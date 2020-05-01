@@ -25,7 +25,7 @@ class ProdutoRepository{
 
   }
 
-  static Future<String> setNovoProduto(Produto item) async {
+  static Future<Produto> setNovoProduto(Produto item) async {
 
     // Usuario user = await Usuario.get();
 
@@ -40,10 +40,15 @@ class ProdutoRepository{
 
     var body = convert.json.encode(data);
     var url = URL_BASE+'/produtos';
-
     var response = await http.post(url, headers: headers, body: body);
 
-    return response.body;
+
+
+    Map dat = convert.json.decode(response.body);
+
+    Produto produto = Produto.fromJson(dat);
+
+    return produto;
 
 
   }

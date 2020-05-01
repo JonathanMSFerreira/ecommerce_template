@@ -10,7 +10,7 @@ class CategoriaRepository{
 
   static Future<List<Categoria>> getCategorias() async {
 
-   // Usuario user = await Usuario.get();
+   //Usuario user = await Usuario.get();
 
     Map<String, String> headers = {
 
@@ -25,6 +25,9 @@ class CategoriaRepository{
     var response = await http.get(url, headers: headers);
 
     String json = response.body;
+
+
+    print(json);
 
 
     List list = convert.json.decode(json);
@@ -76,23 +79,12 @@ class CategoriaRepository{
       //  "Authorization": "Bearer ${user.token}"
 
     };
-//
-//    Map data = {
-//      'titulo': categoria.titulo,
-//      'foto': categoria.foto
-//    };
-
-   // var body = convert.json.encode(data);
-
 
     var url = URL_BASE+'/categorias/$id';
 
-    // var response = await http.get(url, headers: headers);
 
     var response = await http.delete(url, headers: headers);
 
-
-    //String json = response.body;
 
     return response.body;
 

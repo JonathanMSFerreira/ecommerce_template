@@ -1,6 +1,7 @@
 import 'package:ecommerce_template/model/categoria_produto.dart';
 import 'package:ecommerce_template/model/cor_tam_produto.dart';
 import 'package:ecommerce_template/model/foto_produto.dart';
+import 'package:ecommerce_template/model/status.dart';
 
 class Produto {
   int id;
@@ -11,6 +12,7 @@ class Produto {
   double precoVenda;
   bool   emPromocao;
   int    qtdTotal;
+  Status status;
 
   List<CorTamProdutos> corTamProdutos;
 //  List<Null> favoritos;
@@ -28,6 +30,7 @@ class Produto {
         this.qtdTotal,
         this.categorias,
         this.corTamProdutos,
+        this.status
 //        this.favoritos,
 //        this.carrinhos,
 
@@ -42,6 +45,8 @@ class Produto {
     emPromocao = json['emPromocao'];
     precoVenda = json['precoVenda'];
     qtdTotal = json['qtdTotal'];
+
+    status = json['status'] != null ? new Status.fromJson(json['status']) : null;
 
 
     if (json['corTamProdutos'] != null) {
@@ -80,6 +85,11 @@ class Produto {
     data['emPromocao'] = this.emPromocao;
     data['precoVenda'] = this.precoVenda;
     data['qtdTotal'] = this.qtdTotal;
+
+
+    if (this.status != null) {
+      data['status'] = this.status.toJson();
+    }
 
 
     if (this.corTamProdutos != null) {

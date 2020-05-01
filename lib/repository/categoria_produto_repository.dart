@@ -9,31 +9,31 @@ import 'dart:convert' as convert;
 class CategoriaProdutoRepository{
 
 
-  static Future<List<Categoria>> getCategorias() async {
-
-   // Usuario user = await Usuario.get();
-
-    Map<String, String> headers = {
-
-      "Content-Type": "application/json",
-    //  "Authorization": "Bearer ${user.token}"
-
-    };
-
-
-    var url = URL_BASE+'/categorias';
-
-    var response = await http.get(url, headers: headers);
-
-    String json = response.body;
-
-
-    List list = convert.json.decode(json);
-
-    return list.map<Categoria>((map) => Categoria.fromJson(map)).toList();
-
-
-  }
+//  static Future<List<Categoria>> getCategorias() async {
+//
+//   // Usuario user = await Usuario.get();
+//
+//    Map<String, String> headers = {
+//
+//      "Content-Type": "application/json",
+//    //  "Authorization": "Bearer ${user.token}"
+//
+//    };
+//
+//
+//    var url = URL_BASE+'/categorias';
+//
+//    var response = await http.get(url, headers: headers);
+//
+//    String json = response.body;
+//
+//
+//    List list = convert.json.decode(json);
+//
+//    return list.map<Categoria>((map) => Categoria.fromJson(map)).toList();
+//
+//
+//  }
 
   static Future<String> setNovaCategoriaProduto(CategoriaProduto categoriaProduto) async {
 
@@ -46,13 +46,18 @@ class CategoriaProdutoRepository{
 
     };
 
+
+//    Map data = categoriaProduto.toJson();
+//
+//    var body = convert.json.encode(data);
+
+
     Map data = {
       'categoria': categoriaProduto.categoria,
       'produto': categoriaProduto.produto
     };
 
     var body = convert.json.encode(data);
-
 
     var url = URL_BASE+'/categoriaProdutos';
 

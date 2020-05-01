@@ -1,8 +1,8 @@
-import 'dart:convert';
+
 import 'package:ecommerce_template/model/categoria.dart';
 import 'package:ecommerce_template/model/produto.dart';
 import 'package:ecommerce_template/pages/categoria_page.dart';
-import 'package:ecommerce_template/widgets/container_foto_categoria.dart';
+import 'package:ecommerce_template/widgets/custom_containers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +44,7 @@ class ListaCategoria extends StatelessWidget {
         child: Column(
           children: <Widget>[
 
-            circleFotoCategoria(foto),
+            CustomContainer.fotoCircular(foto, 80, 80, 40, Colors.orange),
 
             Text(titulo, style: new TextStyle(fontSize: 12.0, color: Colors.orange),),
 

@@ -7,7 +7,7 @@ import 'package:ecommerce_template/model/produto.dart';
 import 'package:ecommerce_template/model/usuario.dart';
 import 'package:ecommerce_template/repository/categoria_repository.dart';
 import 'package:ecommerce_template/repository/produto_repository.dart';
-import 'package:ecommerce_template/widgets/container_foto_categoria.dart';
+import 'package:ecommerce_template/widgets/custom_containers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -29,7 +29,7 @@ class _ClientesPageState extends State<ClientesPage> {
 
 
   List<Produto> _produtos;
-  List<Categoria> _categorias;
+
 
   @override
   void initState() {
@@ -170,7 +170,7 @@ class _ClientesPageState extends State<ClientesPage> {
 
 
 
-  void _dialogRemoverItem(Produto item) {
+  void _dialogRemoverItem(Produto prod) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -180,8 +180,8 @@ class _ClientesPageState extends State<ClientesPage> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              circleFotoCategoria(item.fotoPrincipal),
-              Text(item.titulo),
+          CustomContainer.fotoCircular(prod.fotoPrincipal, 40, 40, 40, Colors.orange),
+              Text(prod.titulo),
               Divider(),
               Text("Deseja remover este produto?",textAlign: TextAlign.center,),
             ],
@@ -200,7 +200,7 @@ class _ClientesPageState extends State<ClientesPage> {
               child: new Text("Remover"),
               onPressed: () {
 
-                ProdutoRepository.removeProduto(item.id).then((value){
+                ProdutoRepository.removeProduto(prod.id).then((value){
                   Navigator.of(context).pop();
                   _carregaDados();
                 });
