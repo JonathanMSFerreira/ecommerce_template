@@ -43,6 +43,29 @@ class ClienteRepository{
 
 }
 
+
+
+
+
+  static Future<int> count() async {
+
+    // Usuario user = await Usuario.get();
+
+    Map<String, String> headers = {
+
+      "Content-Type": "application/json",
+      //  "Authorization": "Bearer ${user.token}"
+    };
+
+    var url = URL_BASE + '/clientes/count';
+    var response = await http.get(url, headers: headers);
+    String json = response.body;
+    int count = convert.json.decode(json);
+    return count;
+
+  }
+
+
   static Future<List<Usuario>> getAllClientes() async {
 
     // Usuario user = await Usuario.get();

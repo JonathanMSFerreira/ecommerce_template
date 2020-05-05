@@ -9,6 +9,7 @@ import 'package:ecommerce_template/repository/categoria_repository.dart';
 import 'package:ecommerce_template/repository/cliente_repository.dart';
 import 'package:ecommerce_template/repository/produto_repository.dart';
 import 'package:ecommerce_template/utils/constants.dart';
+import 'package:ecommerce_template/widgets/custom_loading.dart';
 import 'package:flutter/material.dart';
 
 
@@ -24,10 +25,10 @@ class AdminPage extends StatefulWidget {
 class _AdminPageState extends State<AdminPage> {
 
 
-  List<Categoria> _categorias;
-  List<Produto> _produtos;
-  List<Usuario> _clientes;
 
+  var _countProdutos;
+  var _countCategorias;
+  var _countClientes;
 
   Page _selectedPage = Page.dashboard;
 
@@ -39,23 +40,19 @@ class _AdminPageState extends State<AdminPage> {
     super.initState();
   }
 
-  _getDadosAdmin()  {
-         ClienteRepository.getAllClientes().then((c) {
+  _getDadosAdmin()  async {
 
-           setState(() {
-             _clientes =  c;
-           });
-           ProdutoRepository.getProdutos().then((i){
-             setState(() {
-               _produtos = i;
-             });
-             CategoriaRepository.getCategorias().then((ca){
-               setState(() {
-                 _categorias = ca;
-               });
-             });
-           });
-         });
+    _countClientes =   await ClienteRepository.count();
+
+    _countProdutos = await ProdutoRepository.count();
+
+    _countCategorias = await CategoriaRepository.count();
+
+    setState(() {
+
+    });
+
+
   }
 
 
@@ -93,9 +90,9 @@ class _AdminPageState extends State<AdminPage> {
           elevation: 0.0,
           backgroundColor: Colors.white,
         ),
-        body: _produtos == null  || _categorias == null || _clientes == null
-        ?
-        Center(child: CircularProgressIndicator(),) : _body());
+        body: _countCategorias == null  || _countProdutos == null || _countClientes == null
+        ? CustomLoading.container("Carregando...", Colors.orange)
+        : _body());
   }
 
   Widget _body() {
@@ -121,6 +118,40 @@ class _AdminPageState extends State<AdminPage> {
                 children: <Widget>[
 
 
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () {
+//                        Navigator.push(
+//                            context,
+//                            MaterialPageRoute(
+//                                builder: (context) =>
+//                                    NovoProduto(widget.categorias)));
+                      },
+                      child: Card(
+                        color: Colors.orange,
+                        child: ListTile(
+                            title: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Icon(Icons.shopping_cart, color: Colors.white,),
+                                  Text("Pedidos", style: TextStyle(color: Colors.white),),
+                                ],
+                              ),
+                            ),
+                            subtitle: Text(
+                              '12',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white, fontSize: 60.0),
+                            )),
+                      ),
+                    ),
+                  ),
+
+
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
@@ -129,7 +160,7 @@ class _AdminPageState extends State<AdminPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    ClientesPage(_clientes)));
+                                    ClientesPage()));
                       },
                       child: Card(
                         child: ListTile(
@@ -138,13 +169,13 @@ class _AdminPageState extends State<AdminPage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Icon(Icons.category),
+                                  Icon(Icons.group),
                                   Text("Clientes"),
                                 ],
                               ),
                             ),
                             subtitle: Text(
-                              _clientes.length.toString(),
+                              _countClientes.toString(),
                               textAlign: TextAlign.center,
                               style: TextStyle(color: active, fontSize: 60.0),
                             )),
@@ -163,7 +194,7 @@ class _AdminPageState extends State<AdminPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    CategoriasPage(_categorias)));
+                                    CategoriasPage()));
                       },
                       child: Card(
                         child: ListTile(
@@ -178,7 +209,7 @@ class _AdminPageState extends State<AdminPage> {
                               ),
                             ),
                             subtitle: Text(
-                              _categorias.length.toString(),
+                              _countCategorias.toString(),
                               textAlign: TextAlign.center,
                               style: TextStyle(color: active, fontSize: 60.0),
                             )),
@@ -191,7 +222,7 @@ class _AdminPageState extends State<AdminPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(builder: (context) => ProdutosPage()));
                       },
@@ -208,7 +239,9 @@ class _AdminPageState extends State<AdminPage> {
                               ),
                             ),
                             subtitle: Text(
-                              _produtos.length.toString(),
+
+                              _countProdutos.toString(),
+
                               textAlign: TextAlign.center,
                               style: TextStyle(color: active, fontSize: 60.0),
                             )),
@@ -246,36 +279,7 @@ class _AdminPageState extends State<AdminPage> {
                     ),
                   ),
 
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () {
-//                        Navigator.push(
-//                            context,
-//                            MaterialPageRoute(
-//                                builder: (context) =>
-//                                    NovoProduto(widget.categorias)));
-                      },
-                      child: Card(
-                        child: ListTile(
-                            title: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Icon(Icons.shopping_cart),
-                                  Text("Pedidos"),
-                                ],
-                              ),
-                            ),
-                            subtitle: Text(
-                              '12',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: active, fontSize: 60.0),
-                            )),
-                      ),
-                    ),
-                  ),
+
 
 
                 ],

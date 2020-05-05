@@ -1,13 +1,16 @@
+
+import 'package:ecommerce_template/model/cor.dart';
+import 'package:ecommerce_template/model/foto_produto.dart';
 import 'package:ecommerce_template/model/produto.dart';
 import 'package:ecommerce_template/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 
-class ProdutoRepository{
+class FotosProdutoRepository{
 
 
-  static Future<List<Produto>> getProdutos() async {
+  static Future<List<FotoProduto>> getFotosProduto(Produto produto) async {
 
    // Usuario user = await Usuario.get();
 
@@ -15,17 +18,25 @@ class ProdutoRepository{
 
       "Content-Type": "application/json",
     //  "Authorization": "Bearer ${user.token}"
+
     };
 
-    var url = URL_BASE + '/produtos';
+
+    var url = URL_BASE+'/fotoProdutos/produto/${produto.id}';
     var response = await http.get(url, headers: headers);
+
     String json = response.body;
+
+
     List list = convert.json.decode(json);
-    return list.map<Produto>((map) => Produto.fromJson(map)).toList();
+
+    return list.map<FotoProduto>((map) => FotoProduto.fromJson(map)).toList();
+
 
   }
 
-  static Future<Produto> setNovoProduto(Produto prod) async {
+
+  static Future<FotoProduto> setFotoProduto(FotoProduto fotoProduto) async {
 
     // Usuario user = await Usuario.get();
 
@@ -36,46 +47,22 @@ class ProdutoRepository{
 
     };
 
-    Map data = prod.toJson();
+    Map data = fotoProduto.toJson();
 
     var body = convert.json.encode(data);
-    var url = URL_BASE+'/produtos';
+    var url = URL_BASE+'/fotoProdutos';
     var response = await http.post(url, headers: headers, body: body);
-
-
 
     Map dat = convert.json.decode(response.body);
 
-    Produto produto = Produto.fromJson(dat);
+    FotoProduto fp = FotoProduto.fromJson(dat);
 
-    return produto;
+    return fp;
 
 
   }
 
-
-  static Future<int> count() async {
-
-    // Usuario user = await Usuario.get();
-
-    Map<String, String> headers = {
-
-      "Content-Type": "application/json",
-      //  "Authorization": "Bearer ${user.token}"
-    };
-
-    var url = URL_BASE + '/produtos/count';
-    var response = await http.get(url, headers: headers);
-    String json = response.body;
-    int count = convert.json.decode(json);
-    return count;
-
-  }
-
-
-
-
-  static Future<String> removeProduto(int id) async {
+  static Future<String> removeFotoProduto(int id) async {
 
     // Usuario user = await Usuario.get();
 
@@ -86,16 +73,11 @@ class ProdutoRepository{
 
     };
 
+    var url = URL_BASE+'/fotoProdutos/$id';
 
-
-    var url = URL_BASE+'/produtos/$id';
-
-    // var response = await http.get(url, headers: headers);
 
     var response = await http.delete(url, headers: headers);
 
-
-    //String json = response.body;
 
     return response.body;
 

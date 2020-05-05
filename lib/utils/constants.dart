@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-const URL_BASE = "http://192.168.1.3:8080";
-
+const URL_BASE = "http://192.168.1.2:8080";
 
 
 MaterialColor active = Colors.orange;

@@ -6,6 +6,7 @@ import 'package:ecommerce_template/model/categoria.dart';
 import 'package:ecommerce_template/model/produto.dart';
 import 'package:ecommerce_template/model/usuario.dart';
 import 'package:ecommerce_template/repository/categoria_repository.dart';
+import 'package:ecommerce_template/repository/cliente_repository.dart';
 import 'package:ecommerce_template/repository/produto_repository.dart';
 import 'package:ecommerce_template/widgets/custom_containers.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +17,6 @@ class ClientesPage extends StatefulWidget {
 
 
 
-  List<Usuario> clientes;
-  ClientesPage(this.clientes);
-
-
 
   @override
   _ClientesPageState createState() => _ClientesPageState();
@@ -28,7 +25,7 @@ class ClientesPage extends StatefulWidget {
 class _ClientesPageState extends State<ClientesPage> {
 
 
-  List<Produto> _produtos;
+  List<Usuario> _clientes;
 
 
   @override
@@ -38,15 +35,11 @@ class _ClientesPageState extends State<ClientesPage> {
   }
 
 
-  _carregaDados(){
+  _carregaDados() async {
 
-    ProdutoRepository.getProdutos().then((value){
-      setState(() {
-        _produtos = value;
-      });
+    _clientes = await ClienteRepository.getAllClientes();
 
 
-    });
   }
 
 
@@ -56,7 +49,7 @@ class _ClientesPageState extends State<ClientesPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Produtos", style: TextStyle(color: Colors.orange),),
+        title: Text("Clientes", style: TextStyle(color: Colors.orange),),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
@@ -66,7 +59,7 @@ class _ClientesPageState extends State<ClientesPage> {
         child: Icon(Icons.add, color: Colors.white,),
 
       ),
-      body: _produtos == null ? Center(child: CircularProgressIndicator()) : _carregaPagina(),
+      body: _clientes == null ? Center(child: CircularProgressIndicator()) : _carregaPagina(),
 
     );
   }
@@ -79,7 +72,7 @@ class _ClientesPageState extends State<ClientesPage> {
       separatorBuilder: (context, index) => Divider(
         color: Colors.orange,
       ),
-      itemCount: _produtos.length,
+      itemCount: _clientes.length,
       itemBuilder: (context,index){
 
         return Padding(
@@ -96,12 +89,12 @@ class _ClientesPageState extends State<ClientesPage> {
 
                   Container(
                     width: 100.0,
-                   // height: 40.0,
-                    child: Image.memory(
-                      base64Decode(_produtos[index].fotoPrincipal),
-
-                      fit: BoxFit.cover,
-                    ),
+                    height: 40.0,
+//                    child: Image.memory(
+//                      base64Decode(_clientes[index].fotoPrincipal),
+//
+//                      fit: BoxFit.cover,
+//                    ),
                   ),
 
 
@@ -110,12 +103,12 @@ class _ClientesPageState extends State<ClientesPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(_produtos[index].titulo, style: TextStyle(fontSize: 20),),
+                        child: Text("Nome do cliente", style: TextStyle(fontSize: 20),),
                       ),
 
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("12 produtos",),
+                        child: Text("email@email.com",),
                       ),
                     ],)
                 ],
@@ -126,7 +119,7 @@ class _ClientesPageState extends State<ClientesPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: RaisedButton(
+                    child: FlatButton(
                       color: Colors.orange,
                       child: Row(
                         children: <Widget>[
@@ -144,7 +137,7 @@ class _ClientesPageState extends State<ClientesPage> {
 
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: RaisedButton(
+                    child: FlatButton(
                       color: Colors.orange,
                       child: Row(
 
@@ -154,7 +147,7 @@ class _ClientesPageState extends State<ClientesPage> {
                         ],
                       ),
                       onPressed: (){
-                       _dialogRemoverItem(_produtos[index]);
+//                       _dialogRemoverItem(_clientes[index]);
 
                       },
                     ),
@@ -170,46 +163,46 @@ class _ClientesPageState extends State<ClientesPage> {
 
 
 
-  void _dialogRemoverItem(Produto prod) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-
-        return AlertDialog(
-
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-          CustomContainer.fotoCircular(prod.fotoPrincipal, 40, 40, 40, Colors.orange),
-              Text(prod.titulo),
-              Divider(),
-              Text("Deseja remover este produto?",textAlign: TextAlign.center,),
-            ],
-          ),
-          actions: <Widget>[
-
-            new FlatButton(
-
-              child: new Text("Cancelar", style: TextStyle(color: Colors.grey),),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-
-              child: new Text("Remover"),
-              onPressed: () {
-
-                ProdutoRepository.removeProduto(prod.id).then((value){
-                  Navigator.of(context).pop();
-                  _carregaDados();
-                });
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+//  void _dialogRemoverItem(Produto prod) {
+//    showDialog(
+//      context: context,
+//      builder: (BuildContext context) {
+//
+//        return AlertDialog(
+//
+//          content: Column(
+//            mainAxisSize: MainAxisSize.min,
+//            children: <Widget>[
+//          CustomContainer.fotoCircular(prod.fotoPrincipal, 40, 40, 40, Colors.orange),
+//              Text(prod.titulo),
+//              Divider(),
+//              Text("Deseja remover este produto?",textAlign: TextAlign.center,),
+//            ],
+//          ),
+//          actions: <Widget>[
+//
+//            new FlatButton(
+//
+//              child: new Text("Cancelar", style: TextStyle(color: Colors.grey),),
+//              onPressed: () {
+//                Navigator.of(context).pop();
+//              },
+//            ),
+//            new FlatButton(
+//
+//              child: new Text("Remover"),
+//              onPressed: () {
+//
+//                ProdutoRepository.removeProduto(prod.id).then((value){
+//                  Navigator.of(context).pop();
+//                  _carregaDados();
+//                });
+//              },
+//            ),
+//          ],
+//        );
+//      },
+//    );
+//  }
 
 }

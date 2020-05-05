@@ -10,6 +10,7 @@ class Produto {
   String fotoPrincipal;
   double precoCompra;
   double precoVenda;
+  double precoPromocao;
   bool   emPromocao;
   int    qtdTotal;
   Status status;
@@ -27,6 +28,7 @@ class Produto {
         this.precoCompra,
         this.emPromocao,
         this.precoVenda,
+        this.precoPromocao,
         this.qtdTotal,
         this.categorias,
         this.corTamProdutos,
@@ -42,6 +44,7 @@ class Produto {
     descricao = json['descricao'];
     fotoPrincipal = json['fotoPrincipal'];
     precoCompra = json['precoCompra'];
+    precoPromocao = json['precoPromocao'];
     emPromocao = json['emPromocao'];
     precoVenda = json['precoVenda'];
     qtdTotal = json['qtdTotal'];
@@ -82,6 +85,7 @@ class Produto {
     data['descricao'] = this.descricao;
     data['fotoPrincipal'] = this.fotoPrincipal;
     data['precoCompra'] = this.precoCompra;
+    data['precoPromocao'] = this.precoPromocao;
     data['emPromocao'] = this.emPromocao;
     data['precoVenda'] = this.precoVenda;
     data['qtdTotal'] = this.qtdTotal;

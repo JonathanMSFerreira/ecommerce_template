@@ -9,11 +9,12 @@ class FotoProduto{
 
   Produto produto;
 
-  FotoProduto({this.id, this.foto});
+  FotoProduto({this.id, this.foto, this.produto});
 
   FotoProduto.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     foto = json['foto'];
+    produto = json['produto'] != null ? new Produto.fromJson(json['produto']) : null;
 
   }
 
@@ -21,6 +22,9 @@ class FotoProduto{
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['foto'] = this.foto;
+    if (this.produto != null) {
+      data['produto'] = this.produto.toJson();
+    }
     return data;
   }
 }

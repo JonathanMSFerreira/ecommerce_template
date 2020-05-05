@@ -1,6 +1,7 @@
 
 import 'package:ecommerce_template/model/categoria.dart';
 import 'package:ecommerce_template/model/categoria_produto.dart';
+import 'package:ecommerce_template/model/cor.dart';
 import 'package:ecommerce_template/model/cor_tam_produto.dart';
 import 'package:ecommerce_template/model/produto.dart';
 import 'package:ecommerce_template/utils/constants.dart';
@@ -64,6 +65,31 @@ class CorTamanhoProdutoRepository{
   }
 
 
+  static Future<List<CorTamProdutos>> getCorTamProdutosByProdutoAndCor(Produto produto, Cor cor) async {
+
+    // Usuario user = await Usuario.get();
+
+    Map<String, String> headers = {
+
+      "Content-Type": "application/json",
+      //  "Authorization": "Bearer ${user.token}"
+
+    };
+
+
+    var url = URL_BASE+'/corTamProdutos/produto/${produto.id}/cor/${cor.id}';
+
+    var response = await http.get(url, headers: headers);
+
+    String json = response.body;
+
+
+    List list = convert.json.decode(json);
+
+    return list.map<CorTamProdutos>((map) => CorTamProdutos.fromJson(map)).toList();
+
+
+  }
 
 
 
@@ -93,36 +119,30 @@ class CorTamanhoProdutoRepository{
 
   }
 
-//
-//  static Future<String> removeCategoria(int id) async {
-//
-//    // Usuario user = await Usuario.get();
-//
-//    Map<String, String> headers = {
-//
-//      "Content-Type": "application/json",
-//      //  "Authorization": "Bearer ${user.token}"
-//
-//    };
-//
-//    Map data = {
-//      'titulo': categoria.titulo,
-//      'foto': categoria.foto
-//    };
-//
-//    var body = convert.json.encode(data);
-//
-//
-//    var url = URL_BASE+'/categorias/$id';
-//
-//    // var response = await http.get(url, headers: headers);
-//
-//    var response = await http.delete(url, headers: headers);
-//
-//
-//    //String json = response.body;
-//
-//    return response.body;
-//
-//  }
+
+  static Future<String> removeCorTamProduto(int id) async {
+
+    // Usuario user = await Usuario.get();
+
+    Map<String, String> headers = {
+
+      "Content-Type": "application/json",
+      //  "Authorization": "Bearer ${user.token}"
+
+    };
+
+
+
+    var url = URL_BASE+'/corTamProdutos/$id';
+
+    // var response = await http.get(url, headers: headers);
+
+    var response = await http.delete(url, headers: headers);
+
+
+    //String json = response.body;
+
+    return response.body;
+
+  }
 }

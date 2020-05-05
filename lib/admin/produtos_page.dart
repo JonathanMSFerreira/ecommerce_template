@@ -1,16 +1,17 @@
 import 'dart:convert';
-import 'dart:io';
 
+import 'package:ecommerce_template/admin/admin_page.dart';
 import 'package:ecommerce_template/admin/novo_produto_page.dart';
-import 'package:ecommerce_template/admin/opcoes_produto_page.dart';
-import 'package:ecommerce_template/model/categoria.dart';
+import 'package:ecommerce_template/admin/produto_opcoes_page.dart';
 import 'package:ecommerce_template/model/produto.dart';
-import 'package:ecommerce_template/repository/categoria_repository.dart';
 import 'package:ecommerce_template/repository/produto_repository.dart';
 import 'package:ecommerce_template/widgets/custom_containers.dart';
+import 'package:ecommerce_template/widgets/custom_loading.dart';
 import 'package:ecommerce_template/widgets/custom_texts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:load/load.dart';
+
 
 class ProdutosPage extends StatefulWidget {
 
@@ -22,7 +23,7 @@ class _ProdutosPageState extends State<ProdutosPage> {
 
 
   List<Produto> _produtos;
-  //List<Categoria> _categorias;
+
 
   @override
   void initState() {
@@ -44,9 +45,15 @@ class _ProdutosPageState extends State<ProdutosPage> {
   Widget build(BuildContext context) {
 
 
-
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
+
+
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AdminPage()));
+
+
+        }),
         centerTitle: true,
         title: Text("Produtos", style: TextStyle(color: Colors.orange),),
       ),
@@ -68,7 +75,7 @@ class _ProdutosPageState extends State<ProdutosPage> {
 
      if( _produtos == null ){
 
-       return Center(child: CircularProgressIndicator());
+     return  CustomLoading.container("Buscando Produtos...", Colors.orange);
 
      }
 
@@ -78,11 +85,11 @@ class _ProdutosPageState extends State<ProdutosPage> {
 
      }
      
-     return _bodyComInformacao();
+     return _bodyContent();
 
   }
 
-  ListView _bodyComInformacao() {
+  ListView _bodyContent() {
     return ListView.builder(
 
        shrinkWrap: true,
@@ -97,14 +104,21 @@ class _ProdutosPageState extends State<ProdutosPage> {
              Row(
 
                children: <Widget>[
-                 Container(
+                 Column(
+                   crossAxisAlignment: CrossAxisAlignment.start,
+                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                   children: <Widget>[
+                     Container(
 
-                   width: 100.0,
-                   height: 100.0,
-                   child: Image.memory(
-                     base64Decode(_produtos[index].fotoPrincipal),
-                     fit: BoxFit.contain,
-                   ),
+                       width: 80.0,
+                       height: 60.0,
+                       child: Image.memory(
+                         base64Decode(_produtos[index].fotoPrincipal),
+                         fit: BoxFit.contain,
+                       ),
+                     ),
+
+                   ],
                  ),
 
                  Expanded(
@@ -115,19 +129,7 @@ class _ProdutosPageState extends State<ProdutosPage> {
                        mainAxisAlignment: MainAxisAlignment.start,
                        children: <Widget>[
 
-                         Row(
-                           crossAxisAlignment: CrossAxisAlignment.center,
-                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                           children: <Widget>[
-                             Text(_produtos[index].titulo, style: TextStyle(fontSize: 20),),
-
-                             CustomTexts.subTitulo("",_produtos[index].status.status,  14,  Colors.black,   Colors.red)
-
-
-
-                           ],
-                         ),
+                         Text(_produtos[index].titulo, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20),),
 
 
                          CustomTexts.subTitulo("Preço compra: ", "R\$ ${ _produtos[index].precoCompra.toString()}",  14,  Colors.black,  Colors.grey ),
@@ -138,6 +140,7 @@ class _ProdutosPageState extends State<ProdutosPage> {
 
                          CustomTexts.subTitulo("Estoque: ", _produtos[index].qtdTotal.toString(),  14,  Colors.black,  Colors.grey ),
 
+                         CustomTexts.subTitulo("",_produtos[index].status.status,  14,  Colors.black,   Colors.red),
 
 
                          Row(
@@ -148,20 +151,13 @@ class _ProdutosPageState extends State<ProdutosPage> {
 
                              FlatButton(onPressed: (){
 
-                               Navigator.of(context).push(MaterialPageRoute(builder: (context)=>OpcoesProdutoPage(_produtos[index])));
+                               Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ProdutoOpcoesPage(_produtos[index])));
 
                              },
                                  child: Text("Detalhes",style: TextStyle(color: Colors.orange),)
                              ),
 
 
-                             FlatButton(onPressed: (){
-
-                               Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NovoProdutoPage( _produtos[index])));
-
-                             },
-                                 child: Text("Editar",style: TextStyle(color: Colors.orange),)
-                             ),
 
                              FlatButton(onPressed: (){
 
@@ -221,9 +217,11 @@ class _ProdutosPageState extends State<ProdutosPage> {
               child: new Text("Remover"),
               onPressed: () {
 
+                Navigator.of(context).pop();
+
                 ProdutoRepository.removeProduto(produto.id).then((value){
-                  Navigator.of(context).pop();
                   _carregaDados();
+
                 });
               },
             ),

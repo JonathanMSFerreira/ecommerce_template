@@ -8,7 +8,7 @@ import 'package:ecommerce_template/pages/favoritos_page.dart';
 import 'package:ecommerce_template/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
-buildDrawer(BuildContext context, List<Categoria> categorias, List<Produto> itens, ) {
+buildDrawer(BuildContext context, List<Categoria> categorias, List<Produto> produtos, ) {
   return SafeArea(
     child: new  Drawer(
       child: new ListView(
@@ -58,7 +58,7 @@ buildDrawer(BuildContext context, List<Categoria> categorias, List<Produto> iten
             },
             child: ListTile(
               title: Text('Administração'),
-              leading: Icon(Icons.border_color),
+              leading: Icon(Icons.settings),
             ),
           ),
 
@@ -79,7 +79,7 @@ buildDrawer(BuildContext context, List<Categoria> categorias, List<Produto> iten
             onTap: (){
 
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriaPage(categorias, itens)));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriaPage(categorias, produtos)));
             },
             child: ListTile(
               title: Text('Categorias'),

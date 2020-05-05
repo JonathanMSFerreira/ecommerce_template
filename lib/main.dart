@@ -3,7 +3,7 @@ import 'package:ecommerce_template/pages/login_page.dart';
 import 'package:ecommerce_template/pages/loja_page.dart';
 import 'package:ecommerce_template/pages/splash_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:load/load.dart';
 
 
 //MerchantId: 118eea49-14fb-4836-b6bb-bcbe28c65db0
@@ -14,23 +14,33 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 void main() {
   runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    title: 'Ecommerce Template',
-    theme: ThemeData(
-      primarySwatch: Colors.orange,
-      primaryIconTheme: const IconThemeData.fallback().copyWith(
-        color: Colors.orange,
+      debugShowCheckedModeBanner: false,
+      title: 'Ecommerce Template',
+      theme: ThemeData(
+        primarySwatch: Colors.orange,
+        primaryIconTheme: const IconThemeData.fallback().copyWith(
+          color: Colors.orange,
+        ),
+        iconTheme: IconThemeData(
+            color: Colors.orange
+        ),
+        appBarTheme: AppBarTheme(
+            color: Colors.white
+        ),
+        fontFamily: 'OpenSans',
       ),
-      iconTheme: IconThemeData(
-          color: Colors.orange
-      ),
-      appBarTheme: AppBarTheme(
-        color: Colors.white
-      ),
-      fontFamily: 'OpenSans',
-    ),
-    home: SplashPage(),
+      home: SplashPage(),
+
 
   ));
+
+
 }
+
+
+  
+
+
+
+
 

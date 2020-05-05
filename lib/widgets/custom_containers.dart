@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
+
 class CustomContainer {
 
   static fotoCircular(String foto, double width, double height, double radius, Color color) {
@@ -40,11 +41,12 @@ class CustomContainer {
           child: Text(info, style: TextStyle(fontSize: fontSize, color: Colors.grey),),
         ),
 
-
-
-
       ],
     ));
 
   }
+
+
+
+
 }

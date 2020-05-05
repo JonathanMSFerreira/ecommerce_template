@@ -5,14 +5,11 @@ import 'package:ecommerce_template/repository/categoria_repository.dart';
 import 'package:ecommerce_template/widgets/custom_containers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 
 
 class CategoriasPage extends StatefulWidget {
 
-  List<Categoria> categorias;
-
-  CategoriasPage(this.categorias);
 
   @override
   _CategoriasPageState createState() => _CategoriasPageState();

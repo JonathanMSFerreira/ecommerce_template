@@ -37,8 +37,9 @@ dependencies:
   shared_preferences: ^0.5.4+5
   image_picker: ^0.6.5+2
   dio: ^3.0.9
-  flutter_easyloading: ^1.1.4
   groovin_widgets: ^1.5.0+1
+  load: ^0.1.5+1
+
 
 
 dev_dependencies:

@@ -4,13 +4,14 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:ecommerce_template/model/foto_produto.dart';
 import 'package:ecommerce_template/model/produto.dart';
 import 'package:ecommerce_template/pages/carrinho_page.dart';
+import 'package:ecommerce_template/widgets/custom_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProdutoPage extends StatefulWidget {
 
-  Produto item;
-  ProdutoPage(this.item);
+  Produto produto;
+  ProdutoPage(this.produto);
 
   @override
   _ProdutoPageState createState() => _ProdutoPageState();
@@ -57,7 +58,7 @@ class _ProdutoPageState extends State<ProdutoPage> {
             mainAxisSize: MainAxisSize.min,
         children: <Widget>[
 
-          _buildStackImages(context, widget.item),
+          _buildStackImages(context, widget.produto),
 
 
           Padding(
@@ -171,7 +172,7 @@ class _ProdutoPageState extends State<ProdutoPage> {
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
-          itemCount: widget.item.corTamProdutos.length,
+          itemCount: widget.produto.corTamProdutos.length,
 
           itemBuilder: (context, index) {
             return Padding(
@@ -183,7 +184,7 @@ class _ProdutoPageState extends State<ProdutoPage> {
                         child: Container(
                           width: 35.0,
                           height: 35.0,
-                          child: Center(child: Text(widget.item.corTamProdutos[index].tamanho.tamanho)),
+                          child: Center(child: Text(widget.produto.corTamProdutos[index].tamanho.tamanho)),
                           decoration: new BoxDecoration(
 
                             color: Colors.grey.withOpacity(0.5),
@@ -216,38 +217,6 @@ class _ProdutoPageState extends State<ProdutoPage> {
   }
 
 
-  Color _listaCores(String cor) {
-
-
-    switch (cor) {
-
-      case 'Azul':
-        return Colors.blue;
-      case 'Vermelha':
-        return Colors.red;
-      case 'Preta':
-        return Colors.black;
-      case 'Rosa':
-        return Colors.pink;
-      case 'Amarela':
-        return Colors.yellow;
-      case 'Branca':
-        return Colors.white;
-      case 'Verde':
-        return Colors.green;
-      case 'Cinza':
-        return Colors.grey;
-      case 'Marrom':
-        return Colors.brown;
-      case 'Laranja':
-        return Colors.orange;
-      case 'Roxo':
-        return Colors.purple;
-
-
-    }
-
-  }
 
   Widget carregaCores() {
     return Container(
@@ -255,7 +224,7 @@ class _ProdutoPageState extends State<ProdutoPage> {
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
-          itemCount: widget.item.corTamProdutos.length,
+          itemCount: widget.produto.corTamProdutos.length,
 
           itemBuilder: (context, index) {
             return Padding(
@@ -268,12 +237,12 @@ class _ProdutoPageState extends State<ProdutoPage> {
                           width: 35.0,
                           height: 35.0,
                           decoration: new BoxDecoration(
-                            color: _listaCores(widget.item.corTamProdutos[index].cor.cor),
+                            color: CustomColors.convert(widget.produto.corTamProdutos[index].cor.cor),
 
                           ),
                         ),
                       ),
-                      _corSelecionada == widget.item.corTamProdutos[index].cor.id
+                      _corSelecionada == widget.produto.corTamProdutos[index].cor.id
                           ? Center(
                           child: Icon(
                             Icons.check,
@@ -285,7 +254,7 @@ class _ProdutoPageState extends State<ProdutoPage> {
                   ),
                   onTap: () {
                     setState(() {
-                      _corSelecionada = widget.item.corTamProdutos[index].cor.id;
+                      _corSelecionada = widget.produto.corTamProdutos[index].cor.id;
                       //tmpDisciplina.cor = cores[index].value;
                       _corInserido = true;
                     });
