@@ -27,8 +27,6 @@ class CategoriaRepository{
     String json = response.body;
 
 
-    print(json);
-
 
     List list = convert.json.decode(json);
 

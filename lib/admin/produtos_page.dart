@@ -10,7 +10,7 @@ import 'package:ecommerce_template/widgets/custom_loading.dart';
 import 'package:ecommerce_template/widgets/custom_texts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:load/load.dart';
+
 
 
 class ProdutosPage extends StatefulWidget {

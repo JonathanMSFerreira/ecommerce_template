@@ -38,7 +38,8 @@ dependencies:
   image_picker: ^0.6.5+2
   dio: ^3.0.9
   groovin_widgets: ^1.5.0+1
-  load: ^0.1.5+1
+  bottom_navigation_badge: ^1.0.3
+  flutter_masked_text: ^0.8.0
 
 
 
@@ -60,8 +61,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
-    - assets/images/products/
-    - assets/images/cats/
+
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

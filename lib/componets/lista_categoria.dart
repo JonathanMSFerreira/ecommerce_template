@@ -10,10 +10,10 @@ class ListaCategoria extends StatelessWidget {
 
 
   List<Categoria> categorias;
-  List<Produto> itens;
+  List<Produto> produtos;
   Axis orientacao;
 
-  ListaCategoria(this.categorias, this.itens, this.orientacao);
+  ListaCategoria(this.categorias, this.produtos, this.orientacao);
 
 
   @override
@@ -27,19 +27,19 @@ class ListaCategoria extends StatelessWidget {
             categorias[index].id,
             categorias[index].titulo,
             categorias[index].foto,
-             context, categorias, itens
+             context, categorias, produtos
             ));
 
   }
 }
 
- cardCategoria(int id, String titulo, String foto, BuildContext context, List<Categoria> categorias, List<Produto> itens)  {
+ cardCategoria(int id, String titulo, String foto, BuildContext context, List<Categoria> categorias, List<Produto> produtos)  {
 
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) =>  CategoriaPage(categorias, itens)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>  CategoriaPage( produtos,categorias)));
         },
         child: Column(
           children: <Widget>[

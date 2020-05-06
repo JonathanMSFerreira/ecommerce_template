@@ -18,7 +18,6 @@ class CustomContainer {
         ),
 
         child: CircleAvatar(
-
           radius: radius,
           backgroundImage: MemoryImage(
             base64Decode(foto),

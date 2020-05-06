@@ -15,6 +15,7 @@ import 'package:ecommerce_template/widgets/custom_containers.dart';
 import 'package:ecommerce_template/widgets/custom_loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:image_picker/image_picker.dart';
 
 
@@ -35,11 +36,11 @@ class _NovoProdutoPageState extends State<NovoProdutoPage> {
   File _foto;
   bool _btnPressed = false;
   final _formKey = GlobalKey<FormState>();
-  final _precoCompra = TextEditingController();
-  final _precoVenda = TextEditingController();
+  final _precoCompra =  MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.' , precision: 2, leftSymbol: "R\$ ");
+  final _precoVenda =  MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.', precision: 2, leftSymbol: "R\$ ");
   final _titulo  = TextEditingController();
   final _descricao = TextEditingController();
-  final _precoPromocional = TextEditingController();
+  final _precoPromocional = MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: '.' , precision: 2, leftSymbol: "R\$ ");
   Categoria _categoria;
   List<Categoria> _categorias;
   List<Status> _status;
@@ -281,7 +282,7 @@ class _NovoProdutoPageState extends State<NovoProdutoPage> {
                 SizedBox(
                   width: 10,
                 ),
-               isChecked == true ? Flexible(
+               Flexible(
                   child:  Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
@@ -295,15 +296,13 @@ class _NovoProdutoPageState extends State<NovoProdutoPage> {
                         setState(() {
                           _precoPromocional.text = value;
                         });
-
                       },
-
                       validator: (String value) {
                         return value == '' ? 'Campo obrigatório' : null;
                       },
                     ),
                   ),
-                ): Container(),
+                ),
               ],
             ),
           ),
@@ -385,8 +384,8 @@ class _NovoProdutoPageState extends State<NovoProdutoPage> {
       Produto produto = new Produto();
       produto.titulo = _titulo.text;
       produto.descricao = _descricao.text;
-      produto.precoCompra = double.parse(_precoCompra.text);
-      produto.precoVenda = double.parse(_precoVenda.text);
+      produto.precoCompra = _precoCompra.numberValue;
+      produto.precoVenda = _precoVenda.numberValue;
       List<int> imageBytes = _foto.readAsBytesSync();
       String base64Image = base64Encode(imageBytes);
       produto.fotoPrincipal = base64Image;
@@ -395,7 +394,7 @@ class _NovoProdutoPageState extends State<NovoProdutoPage> {
       produto.qtdTotal = 0;
       produto.status = _status.elementAt(0);
 
-      produto.precoPromocao =  isChecked == true ? double.parse(_precoPromocional.text) : null;
+      produto.precoPromocao =  isChecked == true ? _precoPromocional.numberValue : null;
 
       ProdutoRepository.setNovoProduto(produto).then((prod) {
 

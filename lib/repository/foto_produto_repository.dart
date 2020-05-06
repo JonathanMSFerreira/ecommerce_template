@@ -27,6 +27,9 @@ class FotosProdutoRepository{
 
     String json = response.body;
 
+    print(json);
+
+
 
     List list = convert.json.decode(json);
 

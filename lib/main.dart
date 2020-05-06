@@ -1,9 +1,6 @@
-import 'package:ecommerce_template/admin/admin_page.dart';
-import 'package:ecommerce_template/pages/login_page.dart';
-import 'package:ecommerce_template/pages/loja_page.dart';
 import 'package:ecommerce_template/pages/splash_page.dart';
 import 'package:flutter/material.dart';
-import 'package:load/load.dart';
+
 
 
 //MerchantId: 118eea49-14fb-4836-b6bb-bcbe28c65db0

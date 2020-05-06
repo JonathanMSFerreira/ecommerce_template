@@ -11,7 +11,7 @@ class CategoriaPage extends StatefulWidget {
 
   List<Categoria> categorias;
   List<Produto> itens;
-  CategoriaPage(this.categorias,this.itens);
+  CategoriaPage(this.itens,this.categorias);
 
   @override
   _CategoriaPageState createState() => _CategoriaPageState();
@@ -38,15 +38,15 @@ class _CategoriaPageState extends State<CategoriaPage> {
          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-           Container(
-                    width: 95,
-                    color: Colors.white,
-                    child: ListView(
-                      children: [
-                           ListaCategoria(widget.categorias,widget.itens, Axis.vertical),
-                      ],
-                    ),
-                  ),
+//           Container(
+//                    width: 95,
+//                    color: Colors.white,
+//                    child: ListView(
+//                      children: [
+//                           ListaCategoria(widget.categorias,widget.itens, Axis.vertical),
+//                      ],
+//                    ),
+//                  ),
 
             Expanded(
               flex: 1,
@@ -88,24 +88,7 @@ class _CategoriaPageState extends State<CategoriaPage> {
         ),
       ),
 
-      actions: <Widget>[
 
-        GestureDetector(
-          onTap: (){
-
-            Navigator.push(context, MaterialPageRoute(builder: (context) => CarrinhoPage()));
-
-          },
-          child: Padding(
-              padding: const EdgeInsets.all(4),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(Icons.shopping_cart, color: Colors.orange,),
-              )
-          ),
-        ),
-
-      ],
     );
   }
 

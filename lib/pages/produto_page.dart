@@ -4,6 +4,7 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:ecommerce_template/model/foto_produto.dart';
 import 'package:ecommerce_template/model/produto.dart';
 import 'package:ecommerce_template/pages/carrinho_page.dart';
+import 'package:ecommerce_template/repository/foto_produto_repository.dart';
 import 'package:ecommerce_template/widgets/custom_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,8 @@ class _ProdutoPageState extends State<ProdutoPage> {
 
   int _corSelecionada;
 
+  List<FotoProduto> _fotosProduto;
+
   bool _corInserido = false;
 
   int _tamanhoSelecionado;
@@ -31,9 +34,19 @@ class _ProdutoPageState extends State<ProdutoPage> {
   @override
   void initState() {
 
+    _getFotosProduto();
     super.initState();
   }
 
+
+
+  _getFotosProduto() async{
+     FotosProdutoRepository.getFotosProduto(widget.produto).then((value){
+       setState(() {
+         _fotosProduto = value;
+       });
+     });
+  }
 
 
 
@@ -58,7 +71,19 @@ class _ProdutoPageState extends State<ProdutoPage> {
             mainAxisSize: MainAxisSize.min,
         children: <Widget>[
 
-          _buildStackImages(context, widget.produto),
+          _fotosProduto == null ?
+
+          Container(
+            height: 200,
+            width: MediaQuery.of(context).size.width,
+            child: Center(
+              child: CircularProgressIndicator(),
+
+
+            ),
+
+
+          ) : _buildStackImages(context, widget.produto),
 
 
           Padding(
@@ -149,7 +174,7 @@ class _ProdutoPageState extends State<ProdutoPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Text('Descrição', style:  TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold,)),
-                            Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s  Lorem Ipsum has been the industry standard dummy text ever since the 1500s ', textAlign: TextAlign.justify ,style: TextStyle(color: Colors.black)),
+                            Text(widget.produto.descricao, textAlign: TextAlign.justify ,style: TextStyle(color: Colors.black)),
 
                           ],
                         ),
@@ -186,11 +211,7 @@ class _ProdutoPageState extends State<ProdutoPage> {
                           height: 35.0,
                           child: Center(child: Text(widget.produto.corTamProdutos[index].tamanho.tamanho)),
                           decoration: new BoxDecoration(
-
                             color: Colors.grey.withOpacity(0.5),
-
-
-
                           ),
                         ),
                       ),
@@ -316,29 +337,38 @@ class _ProdutoPageState extends State<ProdutoPage> {
   }
 
 
-//  List<Image> _carregaFotosProduto(){
-//
-//    List<Image> images = new List<Image>();
-//
-//    for(FotoProduto f in widget.item.fotos ){
-//
-//     images.add(Image.memory(
-//
-//        base64Decode(f.foto),
-//        //  color: Colors.orange,
-//        fit: BoxFit.contain,
-//        height: 200,
-//        width: double.infinity,
-//      ));
-//
-//  }
-//
-//
-//      return images;
-//
-//
-//
-//  }
+  List<Image> _carregaFotosProduto(){
+
+    List<Image> images = new List<Image>();
+
+    images.add(Image.memory(
+
+      base64Decode(widget.produto.fotoPrincipal),
+      //  color: Colors.orange,
+      fit: BoxFit.contain,
+      height: 200,
+      width: double.infinity,
+    ));
+
+    for(FotoProduto f in _fotosProduto){
+
+     images.add(Image.memory(
+
+        base64Decode(f.foto),
+        //  color: Colors.orange,
+        fit: BoxFit.contain,
+        height: 200,
+        width: double.infinity,
+      ));
+
+  }
+
+
+      return images;
+
+
+
+  }
 
 
   Stack _buildStackImages(BuildContext context, Produto item) {
@@ -346,18 +376,18 @@ class _ProdutoPageState extends State<ProdutoPage> {
 
         children: <Widget>[
 
-//        Container(
-//            height: 300.0,
-//            child: new Carousel(
-//              boxFit: BoxFit.cover,
-//              images: _carregaFotosProduto(),
-//              animationCurve: Curves.fastOutSlowIn,
-//              animationDuration: Duration(milliseconds: 1000),
-//              dotSize: 4.0,
-//              indicatorBgPadding: 2.0,
-//              dotBgColor: Colors.transparent,
-//            ),
-//          ),
+        Container(
+            height: 300.0,
+            child: new Carousel(
+              boxFit: BoxFit.cover,
+              images: _carregaFotosProduto(),
+              animationCurve: Curves.fastOutSlowIn,
+              animationDuration: Duration(milliseconds: 1000),
+              dotSize: 4.0,
+              indicatorBgPadding: 2.0,
+              dotBgColor: Colors.transparent,
+            ),
+          ),
 
           Align(
             alignment: Alignment.topCenter,
@@ -401,8 +431,7 @@ class _ProdutoPageState extends State<ProdutoPage> {
 
                     ),
 
-                      child: Text("1/10",
-                        style: TextStyle(color: Colors.white),))
+                      child: Text(_fotosProduto.length.toString(), style: TextStyle(color: Colors.white),))
               ),
 
             ],
@@ -450,12 +479,12 @@ class _ProdutoPageState extends State<ProdutoPage> {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Text('Blazer', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 20),),
+                      child: Text(widget.produto.titulo, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 20),),
                     ),
 
                     Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Text('R\$ 35.99', textAlign: TextAlign.end,style: TextStyle(color: Colors.black, fontSize: 26, fontWeight: FontWeight.bold),),
+                      child: Text('R\$ ${widget.produto.precoVenda}', textAlign: TextAlign.end,style: TextStyle(color: Colors.black, fontSize: 26, fontWeight: FontWeight.bold),),
                     ),
                   ],
                 ),

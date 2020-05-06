@@ -79,7 +79,7 @@ buildDrawer(BuildContext context, List<Categoria> categorias, List<Produto> prod
             onTap: (){
 
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriaPage(categorias, produtos)));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriaPage( produtos, categorias)));
             },
             child: ListTile(
               title: Text('Categorias'),
